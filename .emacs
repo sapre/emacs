@@ -15,13 +15,79 @@
   (require 'use-package))
   
 (use-package evil
-  :ensure t)
+  :ensure t
+  :config
+  (evil-mode 1))
 ;; no :pin needed, as package.el will choose the version in melpa
 
-(evil-mode t)
 
 (use-package helm
+  :ensure t
+  :config
+  (helm-mode 1))
+;; Why is helm not on in everything like file searching ? 
+
+(use-package ace-jump-mode
+  :ensure t
+  :commands ace-jump-mode
+  :init
+  (bind-key "C-SPC" 'ace-jump-mode))
+
+;;If you use evil
+(define-key evil-normal-state-map (kbd "SPC") 'ace-jump-mode)
+
+;; 
+;; enable a more powerful jump back function from ace jump mode
+;;
+(autoload
+  'ace-jump-mode-pop-mark
+  "ace-jump-mode"
+  "Ace jump back:-)"
+  t)
+(eval-after-load "ace-jump-mode"
+  '(ace-jump-mode-enable-mark-sync))
+(define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
+
+(use-package evil-numbers
   :ensure t)
+(define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
+(define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
+(define-key evil-normal-state-map (kbd "<kp-add>") 'evil-numbers/inc-at-pt)
+(define-key evil-normal-state-map (kbd "<kp-subtract>") 'evil-numbers/dec-at-pt)
+
+(use-package evil-visualstar
+  :ensure t
+  :config
+  (global-evil-visualstar-mode 1))
+
+(use-package magit
+  :ensure t
+  :pin melpa-stable)
+;; we want stable magit package, and not the bleeding edge. 
+
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-mode 1))
+
+(use-package helm-projectile
+  :ensure t
+  :config
+  (helm-projectile-on))
+
+(use-package monokai-theme
+  :ensure t
+  :config
+  (load-theme 'monokai t))
+ ;; Need to make keywords bolded for easier reading.
+
+(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono for Powerline-10" ))
+(set-face-attribute 'default t :font "DejaVu Sans Mono for Powerline-10" )
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
